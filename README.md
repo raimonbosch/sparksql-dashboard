@@ -5,7 +5,7 @@ Provides a cherrypy dashboard to bind access to Spark SQL.
 The SparkSQL-Dashboard is a dashboard designed for Spark. You can generate graphs and compose data analytics dashboards from Spark SQL queries.
 
 ## Installation instructions
-In the first step we create aggregated tables. The aim of aggregated tables is to generate smaller and faster tables i.e. converting a raw table with sessions by url to a smaller table aggregated by total sessions by day:
+In the first step we create aggregated tables. The aim of aggregated tables is to generate faster and smaller tables i.e. creating a table with the results of a GROUP BY of a bigger table:
 
     export DASHBOARD_HOME=$(pwd)
     spark-submit src/Dashboard/aggregations.py
