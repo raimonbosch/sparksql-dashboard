@@ -111,7 +111,7 @@ def replaceFilters(str, params):
 def getIpAddress():
     return socket.gethostbyname(socket.gethostname())
 
-class DashboardSEO(object):
+class DashboardSpark(object):
     
     def __init__(self, sqlContext):
         self.sqlContext = sqlContext
@@ -179,7 +179,7 @@ conf = {
     }
 }
 
-cherrypy.quickstart(DashboardSEO(sqlContext), '/', config=conf)
+cherrypy.quickstart(DashboardSpark(sqlContext), '/', config=conf)
 
 # Run: /opt/spark/bin/spark-submit dashboard.py
 # Query: http://127.0.0.1:8080/?sql=SELECT%20*%20from%20people
