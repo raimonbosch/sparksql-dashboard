@@ -1,0 +1,4 @@
+/vendor/
+/db/parquet/
+/spark-warehouse/
+.idea

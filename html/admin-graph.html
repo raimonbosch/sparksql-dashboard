@@ -1,0 +1,128 @@
+<html>
+<head>
+    <title>Spark SQL Dashboard Admin</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/main.css">
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="js/queries.js"></script>
+    <script src="js/services.js"></script>
+</head>
+<body>
+    <div id="wrapper">
+    <div class="overlay"></div>
+
+    <!-- Sidebar menu -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
+    </nav>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <button type="button" class="hamburger is-closed" data-toggle="offcanvas">
+            <span class="hamb-top"></span>
+            <span class="hamb-middle"></span>
+            <span class="hamb-bottom"></span>
+        </button>
+
+        <div align="center" class="container-fluid">
+            <h1>Dashboard Admin</h1><br/><br/>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="col-sm-4" style="margin-bottom:25px;">
+                        <select id="selectQuery" onchange="updateQuery();">
+                            <option>Load queries...</option>
+                        </select>
+                    </div>
+
+                    <br/><br/>
+                    <div style="width:100%">
+                        <textarea id="sql" name="sql" rows="15" cols="50">SELECT sum(clicks) as clicks, date as x from searchanalytics group by date order by date asc</textarea>
+                        <br/>
+                        <button onclick="executeQueries();"
+                                class="btn">Submit</button>
+                    </div>
+
+                </div>
+                <div class="col-sm-8">
+                    <div id="container" style="height: 400px"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div style="margin:50px;">
+            <div id="results_0" style="width:100%;margin-top:30px;"></div>
+            <div id="results_1" style="width:100%;margin-top:30px;"></div>
+            <div id="results_2" style="width:100%;margin-top:30px;"></div>
+            <div id="results_3" style="width:100%;margin-top:30px;"></div>
+            <div id="results_4" style="width:100%;margin-top:30px;"></div>
+            <div id="results_5" style="width:100%;margin-top:30px;"></div>
+            <div id="results_6" style="width:100%;margin-top:30px;"></div>
+            <div id="results_7" style="width:100%;margin-top:30px;"></div>
+        </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <script type="text/javascript">
+        var chart = null;
+        var type = 'line';
+        var shared = false;
+        var filter = [];
+
+        function findGetParameter(parameterName) {
+            var result = null,
+                tmp = [];
+            location.search
+                .substr(1)
+                .split("&")
+                .forEach(function (item) {
+                    tmp = item.split("=");
+                    if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+                });
+            return result;
+        }
+
+        function updateQuery() {
+            $("#sql").val(
+                $( "#selectQuery" ).val()
+            );
+
+            var indexQuery = parseInt(
+                $( "#selectQuery" )
+                    .children(":selected")
+                    .attr("id")
+            );
+
+            type = queries[indexQuery].type;
+            shared = queries[indexQuery].shared;
+            filter = queries[indexQuery].filter;
+        }
+
+        function executeQueries() {
+            chart = HighChartsService.create(
+                'container',
+                $('#sql').val(),
+                {
+                    'country': findGetParameter('country'),
+                    'vertical': findGetParameter('vertical')
+                }
+            );
+        }
+
+        for (index in queries) {
+            $('#selectQuery').append($("<option></option>")
+                .attr("id", index)
+                .attr("value", queries[index].query.replace(/(?:\r\n|\r|\n)/g, '').replace(/[\s]+/g, ' ').replace(';',';\n\n').trim())
+                .text(queries[index].name));
+        }
+
+    </script>
+</body>
+</html>

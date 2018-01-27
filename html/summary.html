@@ -1,0 +1,86 @@
+<html>
+<head>
+    <title>Dataset example</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/main.css">
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="js/queries.js"></script>
+    <script src="js/services.js"></script>
+</head>
+
+<body>
+  <div id="wrapper">
+    <div class="overlay"></div>
+
+    <!-- Sidebar menu -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
+    </nav>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <button type="button" class="hamburger is-closed" data-toggle="offcanvas">
+            <span class="hamb-top"></span>
+            <span class="hamb-middle"></span>
+            <span class="hamb-bottom"></span>
+        </button>
+
+        <div align="center" class="container-fluid">
+            <h1>Dataset example</h1>
+            <br/><br/>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div id="container1" style="height: 400px"></div>
+                </div>
+                <div class="col-sm-6">
+                    <div id="container2" style="height: 400px"></div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div id="summary_0" style="width:100%;margin:30px;"></div>
+            <div id="summary_1" style="width:100%;margin:30px;"></div>
+            <div id="summary_2" style="width:100%;margin:30px;"></div>
+            <div id="summary_3" style="width:100%;margin:30px;"></div>
+        </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <script type="text/javascript">
+    function findGetParameter(parameterName) {
+        var result = null,
+            tmp = [];
+        location.search
+            .substr(1)
+            .split("&")
+            .forEach(function (item) {
+                tmp = item.split("=");
+                if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+            });
+        return result;
+    }
+
+    //in a real application with updated data, you should use yesyerday's date
+    var date = '2017-12-31'
+    
+    var site = findGetParameter('site');
+    if (site == undefined) {
+        var chart1 = HighChartsService.create('container1', 'id:2', {'date': date});
+        var chart2 = HighChartsService.create('container2', 'id:1', {'date': date});
+        var table1 = TableService.create('summary', 'id:11', {'date': date});
+    }
+    else {
+        var chart1 = HighChartsService.create('container1', 'id:13', {'site': site, 'date': date});
+        var chart2 = HighChartsService.create('container2', 'id:12', {'site': site, 'date': date});
+    }
+
+  </script>
+</body>
+</html>
