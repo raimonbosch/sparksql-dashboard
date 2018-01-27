@@ -23,3 +23,5 @@ read of the scripts to understand the installation steps):
 
     ./install.sh
     ./run.sh
+
+Docker scripts will launch the dashboard on http://localhost:8080/
