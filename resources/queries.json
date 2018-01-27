@@ -1,100 +1,100 @@
 [
-	{
-		"id": "0",
-		"name": "Total sessions",
-		"query": "
+    {
+        "id": "0",
+        "name": "Total sessions",
+        "query": "
                 SELECT
-					sum_sessions as total_sesiones,
-					date as x
-				FROM googleanalytics_by_date
-				ORDER BY date asc
+                    sum_sessions as total_sesiones,
+                    date as x
+                FROM googleanalytics_by_date
+                ORDER BY date asc
                 "
-	},
-	{
-		"id": "1",
-		"name": "Last week vs week before",
-		"shared": true,
+    },
+    {
+        "id": "1",
+        "name": "Last week vs week before",
+        "shared": true,
         "indexed": true,
-		"query": "
+        "query": "
                 SELECT
-					sum_sessions as sessions_today,
-					date_format(date, 'EE, dd MMM yyyy') as x
-				FROM googleanalytics_by_date
-				WHERE date >= date_add('%DATE%', -7)
-					AND date <=  date_add('%DATE%', -1)
-				ORDER BY date asc;
+                    sum_sessions as sessions_today,
+                    date_format(date, 'EE, dd MMM yyyy') as x
+                FROM googleanalytics_by_date
+                WHERE date >= date_add('%DATE%', -7)
+                    AND date <=  date_add('%DATE%', -1)
+                ORDER BY date asc;
 
-				SELECT
-					sum_sessions as sessions_last_week,
-					date_format(date, 'EE, dd MMM yyyy') as x
-				FROM googleanalytics_by_date
-				WHERE date >= date_add('%DATE%', -14)
-					AND date <=  date_add('%DATE%', -8)
-				ORDER BY date asc
+                SELECT
+                    sum_sessions as sessions_last_week,
+                    date_format(date, 'EE, dd MMM yyyy') as x
+                FROM googleanalytics_by_date
+                WHERE date >= date_add('%DATE%', -14)
+                    AND date <=  date_add('%DATE%', -8)
+                ORDER BY date asc
                 "
-	},
-	{
-		"id": "2",
-	    "name": "Last 90 days vs year before",
-		"shared": true,
+    },
+    {
+        "id": "2",
+        "name": "Last 90 days vs year before",
+        "shared": true,
         "indexed": true,
-		"query": "
+        "query": "
                 SELECT
-					sum_sessions as sessions_today,
-					date_format(date, 'EE, dd MMM yyyy') as x
-				FROM googleanalytics_by_date
-				WHERE date >= date_add('%DATE%', -91)
-					AND date <=  date_add('%DATE%', -1)
-				ORDER BY date asc;
+                    sum_sessions as sessions_today,
+                    date_format(date, 'EE, dd MMM yyyy') as x
+                FROM googleanalytics_by_date
+                WHERE date >= date_add('%DATE%', -91)
+                    AND date <=  date_add('%DATE%', -1)
+                ORDER BY date asc;
 
-				SELECT
-					sum_sessions as sessions_year_before,
-					date_format(date, 'EE, dd MMM yyyy') as x
-				FROM googleanalytics_by_date
-				WHERE date >= date_add('%DATE%', -455)
-					AND date <=  date_add('%DATE%', -365)
-				ORDER BY date asc
-                "
-	},
-	{
-		"id": "3",
-		"name": "Total clicks",
-		"query": "
                 SELECT
-					sum(clicks) as clicks_totales,
-					date as x from searchanalytics
-				GROUP BY date
-				ORDER BY date asc
+                    sum_sessions as sessions_year_before,
+                    date_format(date, 'EE, dd MMM yyyy') as x
+                FROM googleanalytics_by_date
+                WHERE date >= date_add('%DATE%', -455)
+                    AND date <=  date_add('%DATE%', -365)
+                ORDER BY date asc
                 "
-	},
-	{
-		"id": "8",
-		"name": "Top 100 queries parties",
-		"query": "
+    },
+    {
+        "id": "3",
+        "name": "Total clicks",
+        "query": "
                 SELECT
-					100*(sum(sessions)/(SELECT sum(sessions) FROM googleanalytics WHERE url like '%/parties%' )) as perc,
-					url as x
-				FROM googleanalytics
-				WHERE url like '%/parties%'
-				GROUP BY url
-				ORDER BY perc desc
-				LIMIT 100
+                    sum(clicks) as clicks_totales,
+                    date as x from searchanalytics
+                GROUP BY date
+                ORDER BY date asc
                 "
-	},
-	{
-		"id": "9",
-		"name": "Top 100 queries live music",
-		"query": "
+    },
+    {
+        "id": "8",
+        "name": "Top 100 queries parties",
+        "query": "
                 SELECT
-					100*(sum(sessions)/(SELECT sum(sessions) FROM googleanalytics WHERE url like '%/live-music%' )) as perc,
-					url as x
-				FROM googleanalytics
-				WHERE url like '%/live-music%'
-				GROUP BY url
-				ORDER BY perc desc
-				LIMIT 100
+                    100*(sum(sessions)/(SELECT sum(sessions) FROM googleanalytics WHERE url like '%/parties%' )) as perc,
+                    url as x
+                FROM googleanalytics
+                WHERE url like '%/parties%'
+                GROUP BY url
+                ORDER BY perc desc
+                LIMIT 100
                 "
-	},
+    },
+    {
+        "id": "9",
+        "name": "Top 100 queries live music",
+        "query": "
+                SELECT
+                    100*(sum(sessions)/(SELECT sum(sessions) FROM googleanalytics WHERE url like '%/live-music%' )) as perc,
+                    url as x
+                FROM googleanalytics
+                WHERE url like '%/live-music%'
+                GROUP BY url
+                ORDER BY perc desc
+                LIMIT 100
+                "
+    },
     {
         "id": "10",
         "name": "This week vs Last week (by site)",
@@ -322,7 +322,7 @@
                     GROUP BY site) last_year 
                 WHERE this_year.site = last_year.site 
                 ORDER BY this_year.sessions DESC 
-        		"
+                "
     },
     {
             "id": "32",
