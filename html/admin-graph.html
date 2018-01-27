@@ -31,6 +31,12 @@
             <h1>Dashboard Admin</h1><br/><br/>
             <div class="row">
                 <div class="col-sm-4">
+                    <span id="span_date" style="display:none;">%DATE% = <input id="date" type="text" value=""></span><br/>
+                    <span id="span_site" style="display:none;">%SITE% = <input id="site" type="text" value=""></span><br/>
+                    <br/><br/>
+                </div>
+
+                <div class="col-sm-4">
                     <div class="col-sm-4" style="margin-bottom:25px;">
                         <select id="selectQuery" onchange="updateQuery();">
                             <option>Load queries...</option>
@@ -41,6 +47,7 @@
                     <div style="width:100%">
                         <textarea id="sql" name="sql" rows="15" cols="50">SELECT sum(clicks) as clicks, date as x from searchanalytics group by date order by date asc</textarea>
                         <br/>
+
                         <button onclick="executeQueries();"
                                 class="btn">Submit</button>
                     </div>
@@ -76,17 +83,27 @@
         var shared = false;
         var filter = [];
 
-        function findGetParameter(parameterName) {
-            var result = null,
-                tmp = [];
-            location.search
-                .substr(1)
-                .split("&")
-                .forEach(function (item) {
-                    tmp = item.split("=");
-                    if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
-                });
-            return result;
+        function resetParameters(indexQuery) {
+            $( "#span_date" ).hide();
+            $( "#span_site" ).hide();
+            $( "#date" ).val('');
+            $( "#site" ).val('');
+
+            if (queries[indexQuery].hasOwnProperty('filter')) {
+                if (queries[indexQuery].filter.hasOwnProperty('site')) {
+                    $( "#span_site" ).show();
+                }
+                if (queries[indexQuery].filter.hasOwnProperty('date')) {
+                    $( "#span_date" ).show();
+                }
+            }
+
+            if (queries[indexQuery].query.includes('%DATE%')) {
+                $( "#span_date" ).show();
+            }
+            if (queries[indexQuery].query.includes('%SITE%')) {
+                $( "#span_site" ).show();
+            }
         }
 
         function updateQuery() {
@@ -103,6 +120,7 @@
             type = queries[indexQuery].type;
             shared = queries[indexQuery].shared;
             filter = queries[indexQuery].filter;
+            resetParameters(indexQuery);
         }
 
         function executeQueries() {
@@ -110,8 +128,8 @@
                 'container',
                 $('#sql').val(),
                 {
-                    'site': findGetParameter('site'),
-                    'date': findGetParameter('date')
+                    'site': $('#site').val(),
+                    'date': $('#date').val()
                 }
             );
         }

@@ -42,6 +42,8 @@ def loadContexts():
             os.environ["DASHBOARD_HOME"] + '/db/parquet/googleanalytics_by_date',
         'googleanalytics_by_date_site':
             os.environ["DASHBOARD_HOME"] + '/db/parquet/googleanalytics_by_date_site',
+        'googleanalytics':
+            os.environ["DASHBOARD_HOME"] + '/db/json/dataset*/*',
     }
 
 def loadTablesInQuery(sql):
