@@ -1,4 +1,15 @@
-                                 Apache License
+This repository uses Highsoft's JavaScript charting libraries: Highcharts, Highstock and Highmaps.
+
+The libraries are available under different licenses depending on whether it is intended for commercial/government use, or for a personal or non-profit project.
+
+Read more on licensing alternatives here:
+- Highcharts: http://shop.highsoft.com/highcharts.html
+- Highstock: http://shop.highsoft.com/highstock.html
+- Highmaps: http://shop.highsoft.com/highmaps.html  
+
+For the rest of the code, the following license applies:
+
+                              Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
 
