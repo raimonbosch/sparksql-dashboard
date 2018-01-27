@@ -1,4 +1,6 @@
 /vendor/
-/db/parquet/
+/db/
 /spark-warehouse/
 .idea
+*.pyc
+src/Dashboard/*.pyc
