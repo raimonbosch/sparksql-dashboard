@@ -1,3 +1,8 @@
+
+# The aim of this is script is to generate smaller and faster tables 
+# i.e. create a parquet table with the contents of a GROUP BY of a bigger table.
+# The selects shown here are intended as basic examples about what can be accomplished.
+
 from udfs import *
 import time
 import shutil
