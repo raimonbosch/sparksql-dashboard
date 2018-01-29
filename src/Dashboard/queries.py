@@ -1,3 +1,7 @@
+
+# Generates the queries.js (used by the admin-graph.html) if it is executed via "python queries.py". 
+# If it is used as an import "import queries" it loads all queries - defined in resources/queries.json - in a variable.
+
 import json
 import os
 
