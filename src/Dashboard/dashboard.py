@@ -1,3 +1,8 @@
+
+# Contains the cherrypy server necessary to start the dashboard server.
+# This is the bridge between Spark SQL and the frontend.
+# Run: spark-submit dashboard.py
+
 import cherrypy
 import json
 import subprocess
@@ -182,6 +187,3 @@ conf = {
 }
 
 cherrypy.quickstart(DashboardSpark(sqlContext), '/', config=conf)
-
-# Run: /opt/spark/bin/spark-submit dashboard.py
-# Query: http://127.0.0.1:8080/?sql=SELECT%20*%20from%20people
