@@ -1,5 +1,6 @@
-# Creates parquet tables with the main aggregations used by the dashboard
-# Run: /opt/spark-2.1.0-bin-hadoop2.7/bin/spark-submit aggregations.py
+
+# From here you can define all the udfs that you want to use from your Spark SQL queries.
+# getSite(url) is intended as an example of what can be accomplished with UDFs.
 
 def getSite(url):
     if "nightnyc.net" in url:
