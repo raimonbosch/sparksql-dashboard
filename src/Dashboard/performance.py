@@ -1,4 +1,5 @@
-#Creates parquet tables with the main aggregations used by the dashboard
+
+#Tests the performance of you spark installation with a given dataset.
 #Run: spark-submit performance.py
 
 import json
