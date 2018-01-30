@@ -8,5 +8,5 @@ tables:
         './db/json/dataset*/*'
 
 parameters:
-    site: '%SITE%'
-    date: '%DATE%'
+    site: '%SITE%' #(lon|nyc)
+    date: '%DATE%' #[0-9]{4}-[0-9]{2}-[0-9]{2}
