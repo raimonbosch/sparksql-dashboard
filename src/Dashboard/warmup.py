@@ -1,7 +1,8 @@
 
-import queries
 import httplib, urllib
 import time
+
+from queries import *
 
 def launch_query_to_dashboard(query):
     params = urllib.urlencode({'sql': query})
@@ -18,7 +19,7 @@ def launch_query_to_dashboard(query):
 
 start = time.time()
 
-for query in queries.queries:
+for query in queries:
     if "indexed" in query and query["indexed"] == True:
         sqls = query["query"].split(';')
         for sql in sqls:

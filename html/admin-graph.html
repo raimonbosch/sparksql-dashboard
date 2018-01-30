@@ -30,12 +30,9 @@
         <div align="center" class="container-fluid">
             <h1>Dashboard Admin</h1><br/><br/>
             <div class="row">
-                <div class="col-sm-4">
-                    <span id="span_date" style="display:none;">%DATE% = <input id="date" type="text" value=""></span><br/>
-                    <span id="span_site" style="display:none;">%SITE% = <input id="site" type="text" value=""></span><br/>
-                    <br/><br/>
-                </div>
-
+                <div id="parameters" class="col-sm-4"></div>
+            </div>
+            <div class="row">
                 <div class="col-sm-4">
                     <div class="col-sm-4" style="margin-bottom:25px;">
                         <select id="selectQuery" onchange="updateQuery();">
@@ -79,31 +76,14 @@
 
     <script type="text/javascript">
         var chart = null;
-        var type = 'line';
-        var shared = false;
-        var filter = [];
+        var actualId = null;
+        prepareParameters();
 
-        function resetParameters(indexQuery) {
-            $( "#span_date" ).hide();
-            $( "#span_site" ).hide();
-            $( "#date" ).val('');
-            $( "#site" ).val('');
-
-            if (queries[indexQuery].hasOwnProperty('filter')) {
-                if (queries[indexQuery].filter.hasOwnProperty('site')) {
-                    $( "#span_site" ).show();
-                }
-                if (queries[indexQuery].filter.hasOwnProperty('date')) {
-                    $( "#span_date" ).show();
-                }
-            }
-
-            if (queries[indexQuery].query.includes('%DATE%')) {
-                $( "#span_date" ).show();
-            }
-            if (queries[indexQuery].query.includes('%SITE%')) {
-                $( "#span_site" ).show();
-            }
+        for (index in queries) {
+            $('#selectQuery').append($("<option></option>")
+                .attr("id", index)
+                .attr("value", queries[index].query.replace(/(?:\r\n|\r|\n)/g, '').replace(/[\s]+/g, ' ').replace(';',';\n\n').trim())
+                .text(queries[index].name));
         }
 
         function updateQuery() {
@@ -117,28 +97,47 @@
                     .attr("id")
             );
 
-            type = queries[indexQuery].type;
-            shared = queries[indexQuery].shared;
-            filter = queries[indexQuery].filter;
+            actualId = queries[indexQuery].id;
             resetParameters(indexQuery);
         }
 
         function executeQueries() {
-            chart = HighChartsService.create(
-                'container',
-                $('#sql').val(),
-                {
-                    'site': $('#site').val(),
-                    'date': $('#date').val()
-                }
-            );
+            chartParams = {}
+            for(var parameter in context.parameters){
+                chartParams[parameter] = $('#' + parameter).val()
+            }
+            chartParams['id'] = actualId
+            chart = HighChartsService.create('container', $('#sql').val(), chartParams);
         }
 
-        for (index in queries) {
-            $('#selectQuery').append($("<option></option>")
-                .attr("id", index)
-                .attr("value", queries[index].query.replace(/(?:\r\n|\r|\n)/g, '').replace(/[\s]+/g, ' ').replace(';',';\n\n').trim())
-                .text(queries[index].name));
+        function prepareParameters() {
+            spanParameters = '';
+            for(var parameter in context.parameters){
+                spanParameters +=
+                    '<span id="span_' + parameter + '" style="display:none;">' +
+                        context.parameters[parameter] +
+                        ' = <input id="' + parameter + '" type="text" value="">' +
+                     '</span><br/>';
+            }
+
+            $( "#parameters" ).html(spanParameters);
+        }
+
+        function resetParameters(indexQuery) {
+            for(var parameter in context.parameters){
+                $( "#span_" + parameter ).hide();
+                $( "#" + parameter ).val('');
+
+                if (queries[indexQuery].hasOwnProperty('filter')) {
+                    if (queries[indexQuery].filter.hasOwnProperty(parameter)) {
+                        $( "#span_" + parameter ).show();
+                    }
+                }
+
+                if (queries[indexQuery].query.includes(context.parameters[parameter])) {
+                    $( "#span_" + parameter ).show();
+                }
+            }
         }
 
     </script>

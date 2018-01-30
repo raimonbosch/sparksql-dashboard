@@ -1,22 +1,21 @@
+
 import cherrypy
 import json
-import subprocess
 import os
 import time
 import re
-import queries
 import socket
 
 from pyspark.sql import SQLContext
 from pyspark import SparkConf, SparkContext
-from pyspark.sql.types import StringType
+from queries import *
 from udfs import *
 
 def initSparkContext(tables):
     conf = SparkConf().set("spark.driver.allowMultipleContexts", "true")
     sc = SparkContext(conf=conf)
     sqlContext = SQLContext(sc)
-    sqlContext.udf.register("getSite", getSite, StringType())
+    sqlContext = registerUdfs(sqlContext)
 
     return sqlContext
 
@@ -37,14 +36,7 @@ def doQuery(sql):
     return result
 
 def loadContexts():
-    return {
-        'googleanalytics_by_date':
-            os.environ["DASHBOARD_HOME"] + '/db/parquet/googleanalytics_by_date',
-        'googleanalytics_by_date_site':
-            os.environ["DASHBOARD_HOME"] + '/db/parquet/googleanalytics_by_date_site',
-        'googleanalytics':
-            os.environ["DASHBOARD_HOME"] + '/db/json/dataset*/*',
-    }
+    return context['tables']
 
 def loadTablesInQuery(sql):
     subject = ' ' + sql + ' '
@@ -64,18 +56,18 @@ def initTableContext(table):
  
 def prepareUi(id):
     ui = {}
-    if 'shared' in queries.queries_hash[id]:
-        ui['shared'] = queries.queries_hash[id]['shared']
+    if 'shared' in queries_hash[id]:
+        ui['shared'] = queries_hash[id]['shared']
     else:
         ui['shared'] = False
     
-    if 'type' in queries.queries_hash[id]:
-        ui['type'] = queries.queries_hash[id]['type']
+    if 'type' in queries_hash[id]:
+        ui['type'] = queries_hash[id]['type']
     else:
         ui['type'] = 'line'
     
-    if 'filter' in queries.queries_hash[id]:
-        ui['filter'] = queries.queries_hash[id]['filter'].copy()
+    if 'filter' in queries_hash[id]:
+        ui['filter'] = queries_hash[id]['filter'].copy()
     else:
         ui['filter'] = {}
     
@@ -103,10 +95,10 @@ def filterResults(results, filters, params):
     return resultListOut  
 
 def replaceFilters(str, params):
-    if 'params[site]' in params:
-        str =  re.sub(r'\%SITE\%', params['params[site]'], str)
-    if 'params[date]' in params:
-        str =  re.sub(r'\%DATE\%', params['params[date]'], str)
+    for key in context['parameters']:
+        paramName = context['parameters'][key]
+        if 'params[' + key + ']' in params:
+            str = str.replace(paramName, params['params[' + key + ']'])
     
     return str
 
@@ -129,19 +121,22 @@ class DashboardSpark(object):
         sql = params['sql']
         if sql.startswith("id:"):
             id = sql.replace("id:", "")
-            sql = queries.queries_hash[id]['query']
+            sql = queries_hash[id]['query']
             ui = prepareUi(id)
+
+        if 'params[id]' in params:
+            ui = prepareUi(params['params[id]'])
         
-        sql =  re.sub(r'[\n\t\r]+', ' ', sql)
+        sql = re.sub(r'[\n\t\r]+', ' ', sql)
         sql = replaceFilters(sql, params)
             
         results = []
         for query in sql.split(';'):
             results.append(doQuery(query))
-        
+
         if 'filter' in ui and len(ui['filter']) > 0:
             results = filterResults(results, ui['filter'], params)
-        
+
         return json.dumps({'results': results, 'ui': ui}, sort_keys=True)
 
     @cherrypy.expose

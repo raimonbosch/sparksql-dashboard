@@ -6,7 +6,8 @@ RUN apt-get update \
   && apt-get -y install default-jdk \
   && apt-get -y install python-pip python-dev build-essential \
   && pip install --upgrade pip \
-  && pip install cherrypy
+  && pip install cherrypy \
+  && pip install pyyaml
 
 ARG SPARK_ARCHIVE=http://d3kbcqa49mib13.cloudfront.net/spark-2.1.0-bin-hadoop2.7.tgz
 ENV HOME=/dashboard/

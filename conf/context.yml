@@ -1,0 +1,12 @@
+
+tables:
+    googleanalytics_by_date:
+        './db/parquet/googleanalytics_by_date'
+    googleanalytics_by_date_site:
+        './db/parquet/googleanalytics_by_date_site'
+    googleanalytics:
+        './db/json/dataset*/*'
+
+parameters:
+    site: '%SITE%'
+    date: '%DATE%'

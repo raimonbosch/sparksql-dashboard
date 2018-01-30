@@ -1,17 +1,16 @@
-from udfs import *
+
 import time
 import shutil
 import os
-import re
 
 from pyspark.sql import SQLContext
 from pyspark import  SparkContext
-from pyspark.sql.types import StringType
+from udfs import *
 
 def initSparkContext():
     sc = SparkContext()
     sqlContext = SQLContext(sc)
-    sqlContext.udf.register("getSite", getSite, StringType())
+    sqlContext = registerUdfs(sqlContext)
 
     tableContext = sqlContext.read.json(os.environ["DASHBOARD_HOME"] + '/db/json/dataset*/*')
     tableContext.registerTempTable("googleanalytics")
