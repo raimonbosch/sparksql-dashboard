@@ -22,6 +22,6 @@ If you prefer you can use Docker scripts to perform the installation (have a car
 read of the scripts to understand the installation steps):
 
     ./install.sh
-    ./run.sh
+    ./start.sh
 
 Docker scripts will launch the dashboard on http://localhost:8080/

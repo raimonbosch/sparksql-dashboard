@@ -1,4 +1,8 @@
 
+# Reads from resources/queries.json and launches the cacheable queries (indexed=true) against the dashboard.
+# This way, some Spark SQL queries will be cached during all day and no extra work will be done.
+# Run: python warmup.py
+
 import httplib, urllib
 import time
 
@@ -8,7 +12,7 @@ def launch_query_to_dashboard(query):
     params = urllib.urlencode({'sql': query})
     headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
 
-    conn = httplib.HTTPConnection("127.0.0.1")
+    conn = httplib.HTTPConnection("localhost:8080")
     conn.request("POST", "/sql", params, headers)
 
     response = conn.getresponse()
