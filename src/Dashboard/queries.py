@@ -2,7 +2,7 @@
 # Loads configuration variables defined in the context.yml
 
 # Also, it generates the queries.js (used by the admin-graph.html) if it is executed via "python queries.py".
-# If it is used as an import "import queries" it loads all queries - defined in resources/queries.json - in a variable.
+# If it is used as an import "import queries" it loads all queries - defined in config/queries.json - in a variable.
 
 
 import json
@@ -10,13 +10,13 @@ import yaml
 import os
 
 context = {}
-with open(os.environ['DASHBOARD_HOME'] + '/app/config/context.yml', 'r') as stream:
+with open(os.environ['DASHBOARD_HOME'] + '/config/context.yml', 'r') as stream:
     try:
         context = yaml.load(stream)
     except yaml.YAMLError as exc:
         print(exc)
 
-queriesj = open(os.environ['DASHBOARD_HOME'] + '/app/resources/queries.json').read().replace('\n', ' ').replace('\t', ' ')
+queriesj = open(os.environ['DASHBOARD_HOME'] + '/config/queries.json').read().replace('\n', ' ').replace('\t', ' ')
 queries = json.loads(queriesj)
 
 queries_hash = {}

@@ -1,5 +1,5 @@
 
-# Reads from resources/queries.json and launches the cacheable queries (indexed=true) against the dashboard.
+# Reads from config/queries.json and launches the cacheable queries (indexed=true) against the dashboard.
 # This way, some Spark SQL queries will be cached during all day and no extra work will be done.
 # Run: python warmup.py
 
