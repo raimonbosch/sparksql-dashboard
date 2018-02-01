@@ -1,7 +1,7 @@
 # sparksql-dashboard
 Provides a cherrypy dashboard to bind access to Spark SQL.
 
-![Alt text](/images/screenshot1.jpg "Spark SQL Dashboard")
+![Alt text](/app/images/screenshot1.jpg "Spark SQL Dashboard")
 
 ## About
 The SparkSQL-Dashboard is a dashboard designed for Spark. You can generate graphs and compose data analytics dashboards from Spark SQL queries.
