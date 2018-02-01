@@ -145,15 +145,15 @@ class DashboardSpark(object):
 
     @cherrypy.expose
     def graph(self, site="all", date="2017-11-10"):
-        return file(os.environ["DASHBOARD_HOME"] + "/html/admin-graph.html")
+        return file(os.environ["DASHBOARD_HOME"] + "/app/html/admin-graph.html")
 
     @cherrypy.expose
     def index(self, site="all", date="2017-11-10"):
-        return file(os.environ["DASHBOARD_HOME"] + "/html/summary.html")
+        return file(os.environ["DASHBOARD_HOME"] + "/app/html/summary.html")
 
     @cherrypy.expose
     def year(self, site="all", year="2017"):
-        return file(os.environ["DASHBOARD_HOME"] + "/html/year-summary.html")
+        return file(os.environ["DASHBOARD_HOME"] + "/app/html/year-summary.html")
 
 
 sqlContext = initSparkContext([])
@@ -164,19 +164,19 @@ cache = {}
 conf = {
     '/js': {
         'tools.staticdir.on': True, 
-        'tools.staticdir.dir': os.environ['DASHBOARD_HOME'] + '/js/'
+        'tools.staticdir.dir': os.environ['DASHBOARD_HOME'] + '/app/js/'
     },
     '/css': {
         'tools.staticdir.on': True,
-        'tools.staticdir.dir': os.environ['DASHBOARD_HOME'] + '/css/'
+        'tools.staticdir.dir': os.environ['DASHBOARD_HOME'] + '/app/css/'
     },
     '/images': {
         'tools.staticdir.on': True,
-        'tools.staticdir.dir': os.environ['DASHBOARD_HOME'] + '/images/'
+        'tools.staticdir.dir': os.environ['DASHBOARD_HOME'] + '/app/images/'
     },
     '/html': {
         'tools.staticdir.on': True,
-        'tools.staticdir.dir': os.environ['DASHBOARD_HOME'] + '/html/'
+        'tools.staticdir.dir': os.environ['DASHBOARD_HOME'] + '/app/html/'
     }
 }
 

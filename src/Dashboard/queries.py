@@ -10,13 +10,13 @@ import yaml
 import os
 
 context = {}
-with open(os.environ['DASHBOARD_HOME'] + '/conf/context.yml', 'r') as stream:
+with open(os.environ['DASHBOARD_HOME'] + '/app/config/context.yml', 'r') as stream:
     try:
         context = yaml.load(stream)
     except yaml.YAMLError as exc:
         print(exc)
 
-queriesj = open(os.environ['DASHBOARD_HOME'] + '/resources/queries.json').read().replace('\n', ' ').replace('\t', ' ')
+queriesj = open(os.environ['DASHBOARD_HOME'] + '/app/resources/queries.json').read().replace('\n', ' ').replace('\t', ' ')
 queries = json.loads(queriesj)
 
 queries_hash = {}
@@ -24,7 +24,7 @@ for element in queries:
     queries_hash[element['id']] = element
 
 if __name__ == '__main__':
-    f = open(os.environ['DASHBOARD_HOME'] + '/js/queries.js', 'w')
+    f = open(os.environ['DASHBOARD_HOME'] + '/app/js/queries.js', 'w')
     f.write('var queries = ' + json.dumps(queries) + ';')
     f.write('var context = ' + json.dumps(context) + ';')
     f.close()
